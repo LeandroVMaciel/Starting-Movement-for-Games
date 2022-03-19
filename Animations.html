@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New Game</title>
+    <style>
+        #player {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: #00f;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+    <script>
+        var gam;
+        var fast;
+        var dx;
+        var dy;
+        var px;
+        var py;
+        var movement;
+        var mode;
+
+        function start() {
+            fast = 2;
+            dx = 1;
+            dy = 0;
+            px = 0;
+            py = 0;
+            mode = 1; //1 para movendo e 0 para parado.
+            gam = document.getElementById("player");
+            gam.addEventListener("click", moveStop);
+            document.getElementById("btIni").addEventListener("click", mov);
+            document.getElementById("btPara").addEventListener("click", sto);
+            document.getElementById("btIncrease").addEventListener("click", increase);
+            document.getElementById("btDecrease").addEventListener("click", decrease);
+            game();
+        }
+
+        function moveStop() {
+            if (mode) {
+                mode = 0;
+                gam.style.backgroundColor = "#f00";
+                cancelAnimationFrame(movement);
+            } else {
+                mode = 1;
+                gam.style.backgroundColor = "#00f";
+                movement = requestAnimationFrame(game);
+            }
+
+        }
+
+        function mov() {
+            if (!mode) {
+                mode = 1;
+                gam.style.backgroundColor = "#00f";
+                movement = requestAnimationFrame(game);
+            }
+        }
+
+        function sto() {
+            mode = 0;
+            gam.style.backgroundColor = "#f00";
+            cancelAnimationFrame(movement);
+        }
+
+        function increase() {
+            mode = 1;
+            gam.style.backgroundColor = "#00f";
+            movement = requestAnimationFrame(game);
+        }
+
+        function decrease() {
+            mode = 0;
+            gam.style.backgroundColor = "#f00";
+            cancelAnimationFrame(movement);
+        }
+
+        function game() {
+            px += (dx * fast);
+            gam.style.left = px + "px";
+            if (px > 200) {
+                dx = -1;
+            } else if (px < 0) {
+                dx = 1;
+            }
+            movement = requestAnimationFrame(game);
+        }
+
+        window.addEventListener("load", start);
+    </script>
+
+<body>
+    <div id="player"></div><br /><br /><br />
+    <button id="btIni">Start</button>
+    <button id="btPara">Stop</button>
+    <button id="btIncrease">Speed +</button>
+    <button id="btDecrease">Speed -</button>
+</body>
+
+</html>
